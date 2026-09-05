@@ -1,0 +1,15 @@
+# Środowiska wirtualne
+.venv/
+venv/
+env/
+
+# Cache Pythona
+__pycache__/
+*.pyc
+
+# Sekrety i zmienne środowiskowe
+.env
+
+# Śmieci systemowe OS
+.DS_Store
+Thumbs.db
