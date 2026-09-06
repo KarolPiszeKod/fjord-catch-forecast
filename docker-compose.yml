@@ -1,0 +1,12 @@
+services:
+  fcf:
+    build: .
+    ports:
+      - "8501:8501"
+    volumes:
+      # Docker Desktop on Windows must be allowed to access these folders.
+      - ./data:/app/data
+      - ./models:/app/models
+    environment:
+      - STREAMLIT_SERVER_HEADLESS=true
+    restart: "no"

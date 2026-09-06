@@ -1,15 +1,20 @@
-# Środowiska wirtualne
 .venv/
-venv/
-env/
-
-# Cache Pythona
 __pycache__/
-*.pyc
-
-# Sekrety i zmienne środowiskowe
-.env
-
-# Śmieci systemowe OS
+*.py[cod]
 .DS_Store
-Thumbs.db
+.pytest_cache/
+
+# dane wejściowe/pośrednie/wyjściowe - pobierane lub generowane lokalnie,
+# nie commitujemy (duże, per-użytkownik, i część to dane wrażliwe/licencjonowane)
+data/raw/
+data/*.csv
+!data/.gitkeep
+
+# modele i wyniki treningu - generowane przez train.py
+models/*.json
+models/*.csv
+models/experiments/
+
+# sekrety
+.env
+.streamlit/secrets.toml

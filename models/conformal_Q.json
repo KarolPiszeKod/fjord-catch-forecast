@@ -1,0 +1,19 @@
+{
+  "conformal_by_species": {
+    "sei": -0.410147765888213,
+    "sild": 6.206022033691406,
+    "torsk": -0.12237466012954712,
+    "_global": -0.12057620538806875
+  },
+  "target_is_log1p": true,
+  "use_conditional_features": true,
+  "feature_columns": [
+    "lag_tons_1",
+    "lag_tons_2",
+    "roll_mean_4",
+    "seasonal_avg_hist",
+    "quota_pct_used",
+    "sst_celsius",
+    "n_vessels_lag_1"
+  ]
+}

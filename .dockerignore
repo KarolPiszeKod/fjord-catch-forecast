@@ -1,0 +1,14 @@
+.git/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.streamlit/
+.env
+data/raw/
+data/*.csv
+models/*.json
+models/*.csv
+models/experiments/
+*.ipynb
+.DS_Store

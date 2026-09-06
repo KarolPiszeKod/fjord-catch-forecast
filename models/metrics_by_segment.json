@@ -1,0 +1,69 @@
+{
+  "species": {
+    "sei": {
+      "n": 415,
+      "median_actual_tons": 54.87661,
+      "mae_tons": 251.04554574651397,
+      "mape_pct": 175.18919444200716,
+      "mdape_pct": 46.07536979368275,
+      "n_excluded_near_zero": 12,
+      "coverage_80pct": 0.8216867469879519
+    },
+    "sild": {
+      "n": 157,
+      "median_actual_tons": 164.44,
+      "mae_tons": 314.3505025054242,
+      "mape_pct": 740.8684487827427,
+      "mdape_pct": 75.97581332983884,
+      "n_excluded_near_zero": 15,
+      "coverage_80pct": 0.802547770700637
+    },
+    "torsk": {
+      "n": 415,
+      "median_actual_tons": 49.94216,
+      "mae_tons": 226.34326445928147,
+      "mape_pct": 234.40674744355317,
+      "mdape_pct": 52.05742727527885,
+      "n_excluded_near_zero": 76,
+      "coverage_80pct": 0.8072289156626506
+    }
+  },
+  "port": {
+    "BODØ": {
+      "n": 206,
+      "median_actual_tons": 2.0955500000000002,
+      "mae_tons": 2.032444254658523,
+      "mape_pct": 57.27730348905856,
+      "mdape_pct": 41.44980849523549,
+      "n_excluded_near_zero": 82,
+      "coverage_80pct": 0.7135922330097088
+    },
+    "TROMSØ": {
+      "n": 252,
+      "median_actual_tons": 602.410975,
+      "mae_tons": 455.07934241548026,
+      "mape_pct": 277.3738337674121,
+      "mdape_pct": 49.816519155251235,
+      "n_excluded_near_zero": 8,
+      "coverage_80pct": 0.8452380952380952
+    },
+    "VÅGAN": {
+      "n": 239,
+      "median_actual_tons": 13.65913,
+      "mae_tons": 45.498884030600195,
+      "mape_pct": 121.42035638468971,
+      "mdape_pct": 44.041355868542134,
+      "n_excluded_near_zero": 6,
+      "coverage_80pct": 0.8661087866108786
+    },
+    "ÅLESUND": {
+      "n": 290,
+      "median_actual_tons": 389.73708,
+      "mae_tons": 418.9533587595952,
+      "mape_pct": 537.7947291912308,
+      "mdape_pct": 65.417488469628,
+      "n_excluded_near_zero": 7,
+      "coverage_80pct": 0.8103448275862069
+    }
+  }
+}

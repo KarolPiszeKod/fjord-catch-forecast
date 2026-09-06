@@ -1,0 +1,16 @@
+{
+  "pinball_loss_log_q10": 0.21044234281089844,
+  "pinball_loss_log_q50": 0.4065803518879075,
+  "pinball_loss_log_q90": 0.1721556700837549,
+  "mae_median_tons": 250.72886031282346,
+  "mape_median_pct_n_rows": 884,
+  "mape_excluded_near_zero_rows": 103,
+  "mape_median_pct": 288.76521772697157,
+  "mdape_median_pct": 50.0189953332703,
+  "coverage_80pct_interval_raw": 0.8216818642350557,
+  "mean_interval_width_raw_tons": 964.330810546875,
+  "median_interval_width_raw_tons": 857.6824340820312,
+  "coverage_80pct_interval_calibrated": 0.8125633232016211,
+  "mean_interval_width_calibrated_tons": 965.6617682382685,
+  "median_interval_width_calibrated_tons": 858.9599626469344
+}

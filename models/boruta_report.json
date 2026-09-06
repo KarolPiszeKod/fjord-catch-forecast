@@ -1,0 +1,619 @@
+{
+  "all_source_years": [
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "year_classification": {
+    "2013": "rozgrzewka",
+    "2014": "rozgrzewka",
+    "2015": "w puli Boruty",
+    "2016": "w puli Boruty",
+    "2017": "w puli Boruty",
+    "2018": "w puli Boruty",
+    "2019": "w puli Boruty",
+    "2020": "w puli Boruty",
+    "2021": "w puli Boruty",
+    "2022": "w puli Boruty",
+    "2023": "wykluczony (TEST/CALIB)",
+    "2024": "wykluczony (TEST/CALIB)",
+    "2025": "wykluczony (TEST/CALIB)"
+  },
+  "warmup_years_used_for_lags_only": [
+    2013,
+    2014
+  ],
+  "test_years_excluded": [
+    2024,
+    2025
+  ],
+  "calib_years_excluded": [
+    2023
+  ],
+  "available_years": [
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022
+  ],
+  "n_folds": 6,
+  "iteration_hit_threshold": 0.6,
+  "recent_folds_required": 3,
+  "overall_fold_confirm_fraction": 0.7,
+  "features": {
+    "lag_tons_1": {
+      "fold_win_fraction": 1.0,
+      "won_all_recent_folds": true,
+      "meets_overall_threshold": true,
+      "fold_hit_rates": [
+        0.933,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "status": "POTWIERDZONA"
+    },
+    "lag_tons_2": {
+      "fold_win_fraction": 0.833,
+      "won_all_recent_folds": true,
+      "meets_overall_threshold": true,
+      "fold_hit_rates": [
+        0.667,
+        0.867,
+        0.467,
+        0.867,
+        0.933,
+        1.0
+      ],
+      "status": "POTWIERDZONA"
+    },
+    "lag_tons_3": {
+      "fold_win_fraction": 0.333,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.133,
+        0.067,
+        0.133,
+        0.667,
+        0.733
+      ],
+      "status": "odrzucona"
+    },
+    "lag_tons_4": {
+      "fold_win_fraction": 0.5,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.2,
+        0.6,
+        0.533,
+        0.333,
+        0.867,
+        1.0
+      ],
+      "status": "odrzucona"
+    },
+    "lag_tons_52": {
+      "fold_win_fraction": 1.0,
+      "won_all_recent_folds": true,
+      "meets_overall_threshold": true,
+      "fold_hit_rates": [
+        1.0,
+        0.867,
+        0.733,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "status": "POTWIERDZONA"
+    },
+    "lag_tons_104": {
+      "fold_win_fraction": 1.0,
+      "won_all_recent_folds": true,
+      "meets_overall_threshold": true,
+      "fold_hit_rates": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "status": "POTWIERDZONA"
+    },
+    "roll_mean_4": {
+      "fold_win_fraction": 1.0,
+      "won_all_recent_folds": true,
+      "meets_overall_threshold": true,
+      "fold_hit_rates": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "status": "POTWIERDZONA"
+    },
+    "seasonal_avg_hist": {
+      "fold_win_fraction": 1.0,
+      "won_all_recent_folds": true,
+      "meets_overall_threshold": true,
+      "fold_hit_rates": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "status": "POTWIERDZONA"
+    },
+    "quota_pct_used": {
+      "fold_win_fraction": 1.0,
+      "won_all_recent_folds": true,
+      "meets_overall_threshold": true,
+      "fold_hit_rates": [
+        0.933,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "status": "POTWIERDZONA"
+    },
+    "sst_celsius": {
+      "fold_win_fraction": 1.0,
+      "won_all_recent_folds": true,
+      "meets_overall_threshold": true,
+      "fold_hit_rates": [
+        0.867,
+        0.867,
+        0.667,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "status": "POTWIERDZONA"
+    },
+    "chlorophyll_a": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.067,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "wave_height_max": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.2,
+        0.133,
+        0.0,
+        0.067,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "storm": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "week_sin": {
+      "fold_win_fraction": 0.333,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.733,
+        0.733,
+        0.467,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "week_cos": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "n_vessels_lag_1": {
+      "fold_win_fraction": 0.833,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": true,
+      "fold_hit_rates": [
+        0.867,
+        1.0,
+        0.733,
+        0.267,
+        0.8,
+        0.733
+      ],
+      "status": "WARUNKOWO_POTWIERDZONA"
+    },
+    "n_vessels_roll_mean_4": {
+      "fold_win_fraction": 0.5,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.867,
+        1.0,
+        0.667,
+        0.333,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "n_vessels_lag_52": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.067,
+        0.0,
+        0.2,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "n_vessels_lag_104": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.0,
+        0.0,
+        0.067,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "n_vessels_seasonal_avg_hist": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.067,
+        0.0,
+        0.0,
+        0.267,
+        0.4
+      ],
+      "status": "odrzucona"
+    },
+    "port_BODØ": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "port_TROMSØ": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "port_VÅGAN": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "port_ÅLESUND": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "species_sei": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "species_sild": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "species_torsk": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "gear_Andre liner": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "gear_Autoline": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "gear_Bunntrål": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "gear_Flyteline": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "gear_Flytetrål": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "gear_Juksa/pilk": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "gear_Landnot": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "gear_Reketrål (herunder sputniktrål)": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "gear_Settegarn": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "gear_Snurpenot/ringnot": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "gear_Snurrevad": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "gear_Udefinert garn": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    },
+    "gear_unknown": {
+      "fold_win_fraction": 0.0,
+      "won_all_recent_folds": false,
+      "meets_overall_threshold": false,
+      "fold_hit_rates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "status": "odrzucona"
+    }
+  }
+}
