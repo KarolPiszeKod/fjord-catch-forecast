@@ -29,15 +29,21 @@ Run these commands from the repository root.
     pip install -r requirements.txt
     ```
 
-4. Run the pipeline in order:
+4. Run the pipeline:
+
+   You can run the pipeline step by step (commands below), or use the helper script `run_pipeline.py`, which executes all steps in order. Both approaches are equivalent — `run_pipeline.py` simply runs the same commands sequentially.
 
     ```powershell
+    # Option A: step by step
     python src/ingest_fiskeridir.py
     python src/ingest_copernicus.py
     python src/merge_sources.py
     python src/features.py
     python src/feature_selection.py
     python src/train.py
+
+    # Option B: one command (recommended)
+    python run_pipeline.py
     ```
 
 5. Start the dashboard:
@@ -163,6 +169,16 @@ Expected local data locations include:
 
 Download all available years, unzip the files, and place the CSV files under `data/raw/fiskeridir/`.
 
+### Copernicus Marine account (2 minutes)
+
+To download ocean features (SST, chlorophyll, wave height, etc.), you need a
+free Copernicus Marine account. Registration takes about 2 minutes:
+
+**Register here:** https://data.marine.copernicus.eu/
+
+After registration, you can download the required products and place them
+under `data/ocean_features.csv` (see `src/ingest_copernicus.py` for details).
+
 Important model files in `models/` include `xgb_quantile_model.json`, `feature_columns.json`, `metrics.json`, and `conformal_Q.json`. The `.gitignore` excludes raw data, generated CSV files, model JSON/CSV artifacts, experiment archives, and secrets. Generate them locally rather than expecting them to appear after cloning.
 
 ## What's next? (if someone feels like hacking on this)
@@ -172,7 +188,7 @@ Important model files in `models/` include `xgb_quantile_model.json`, `feature_c
 - Add better fishing-ground or catch-location features when reliable source data is available.
 - Replace historical reanalysis with operational forecast products.
 
-There is plenty of room for improvement, but at least the first version knows when it does not know. That is already a respectable start.
+There is plenty of room for improvement, but at least the first version knows when it does not know. That is already a fine start.
 
 ## License & credits
 
