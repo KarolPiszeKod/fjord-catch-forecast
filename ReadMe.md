@@ -143,6 +143,26 @@ Expected local data locations include:
 - `data/ocean_features.csv`: prepared Copernicus features.
 - `data/raw_catch_data.csv`: merged data used by feature engineering and training.
 
+### Where to get the data
+
+#### Download links (2013–2025)
+
+- [fangstdata_2013.csv.zip](https://register.fiskeridir.no/uttrekk/fangstdata_2013.csv.zip)
+- [fangstdata_2014.csv.zip](https://register.fiskeridir.no/uttrekk/fangstdata_2014.csv.zip)
+- [fangstdata_2015.csv.zip](https://register.fiskeridir.no/uttrekk/fangstdata_2015.csv.zip)
+- [fangstdata_2016.csv.zip](https://register.fiskeridir.no/uttrekk/fangstdata_2016.csv.zip)
+- [fangstdata_2017.csv.zip](https://register.fiskeridir.no/uttrekk/fangstdata_2017.csv.zip)
+- [fangstdata_2018.csv.zip](https://register.fiskeridir.no/uttrekk/fangstdata_2018.csv.zip)
+- [fangstdata_2019.csv.zip](https://register.fiskeridir.no/uttrekk/fangstdata_2019.csv.zip)
+- [fangstdata_2020.csv.zip](https://register.fiskeridir.no/uttrekk/fangstdata_2020.csv.zip)
+- [fangstdata_2021.csv.zip](https://register.fiskeridir.no/uttrekk/fangstdata_2021.csv.zip)
+- [fangstdata_2022.csv.zip](https://register.fiskeridir.no/uttrekk/fangstdata_2022.csv.zip)
+- [fangstdata_2023.csv.zip](https://register.fiskeridir.no/uttrekk/fangstdata_2023.csv.zip)
+- [fangstdata_2024.csv.zip](https://register.fiskeridir.no/uttrekk/fangstdata_2024.csv.zip)
+- [fangstdata_2025.csv.zip](https://register.fiskeridir.no/uttrekk/fangstdata_2025.csv.zip)
+
+Download all available years, unzip the files, and place the CSV files under `data/raw/fiskeridir/`.
+
 Important model files in `models/` include `xgb_quantile_model.json`, `feature_columns.json`, `metrics.json`, and `conformal_Q.json`. The `.gitignore` excludes raw data, generated CSV files, model JSON/CSV artifacts, experiment archives, and secrets. Generate them locally rather than expecting them to appear after cloning.
 
 ## What's next? (if someone feels like hacking on this)
