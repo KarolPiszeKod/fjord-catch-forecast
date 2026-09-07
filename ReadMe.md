@@ -193,3 +193,9 @@ There is plenty of room for improvement, but at least the first version knows wh
 ## License & credits
 
 FCF uses data from the Norwegian Fisheries Directorate and Copernicus Marine. Users must obtain the data themselves and check the applicable licenses, attribution requirements, and terms of use before using or redistributing it. This repository does not include raw licensed data or generated model artifacts by default.
+
+## Included trained model
+
+This repository includes a trained v1 model and its supporting artifacts, built from the prepared data used for this project. You can use it directly with the dashboard after placing the matching local data under `data/`.
+
+If you are new to the project and want to use data from another year or dataset, start by comparing its structure with the files used here. Check the column names, data types, date and week conventions, port and species values, and the overall file layout. If the new dataset is organised differently, that is completely normal: the ingestion or feature-engineering helpers may need a small refactor before the existing model and pipeline can use it reliably. In other words, the model is ready to help, but it is not quite a plug-and-play wizard for every possible CSV format yet.
