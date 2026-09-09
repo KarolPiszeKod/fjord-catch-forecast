@@ -45,6 +45,11 @@ COLUMN_MAP: dict[str, str | None] = {
     "date": "Landingsdato",
     "vessel_id": "Fartøy ID",
     "gear": "Redskap",
+    "fangstfelt": "Fangstfelt",
+    "hovedomrade": "Hovedområde",
+    "hovedomrade_lon": "Hovedområde lon",
+    "hovedomrade_lat": "Hovedområde lat",
+    "kyst_hav": "Kyst/hav",
 }
 
 CANDIDATE_KEYWORDS = {
@@ -54,6 +59,11 @@ CANDIDATE_KEYWORDS = {
     "date": ["landingsdato", "siste fangstdato"],
     "vessel_id": ["fartøy id", "fartoy id", "fartøyid", "fartoyid"],
     "gear": ["redskap"],
+    "fangstfelt": ["fangstfelt", "fiskefelt", "fishing field"],
+    "hovedomrade": ["hovedomrade", "hovedområde", "main area", "area"],
+    "hovedomrade_lon": ["hovedomrade lon", "hovedområde lon", "lon", "longitude"],
+    "hovedomrade_lat": ["hovedomrade lat", "hovedområde lat", "lat", "latitude"],
+    "kyst_hav": ["kyst/hav", "kyst hav", "kyst_hav", "coast sea", "hav/kyst"],
 }
 
 PORT_FILTER = [str(port).strip().upper() for port in PORTS]
@@ -156,18 +166,31 @@ def process_file(path: Path) -> pd.DataFrame:
     cols = resolve_columns(source)
 
     # Select columns first, then call .copy() to keep the operation explicit.
-    out = source[[
+    selected_cols = [
         cols["tons"],
         cols["species"],
         cols["port"],
         cols["date"],
-    ]].copy()
-    out.columns = ["tons_raw", "species_raw", "port", "date"]
+    ]
+    for key in ("fangstfelt", "hovedomrade", "hovedomrade_lon", "hovedomrade_lat", "kyst_hav"):
+        col_name = cols.get(key)
+        if col_name is not None:
+            selected_cols.append(col_name)
+
+    out = source[selected_cols].copy()
+    out.columns = ["tons_raw", "species_raw", "port", "date"] + [
+        key for key in ("fangstfelt", "hovedomrade", "hovedomrade_lon", "hovedomrade_lat", "kyst_hav")
+        if cols.get(key) is not None
+    ]
 
     vessel_col = cols.get("vessel_id")
     gear_col = cols.get("gear")
     out["vessel_id"] = source[vessel_col] if vessel_col is not None else pd.NA
     out["gear"] = source[gear_col] if gear_col is not None else pd.NA
+
+    for key in ("fangstfelt", "hovedomrade", "hovedomrade_lon", "hovedomrade_lat", "kyst_hav"):
+        if key not in out.columns:
+            out[key] = pd.NA
 
     out["date"] = pd.to_datetime(out["date"], errors="coerce", dayfirst=True)
     out = out.dropna(subset=["date"])
@@ -201,6 +224,15 @@ def process_file(path: Path) -> pd.DataFrame:
     out.loc[out["vessel_id"] == "", "vessel_id"] = pd.NA
     out.loc[out["gear"] == "", "gear"] = pd.NA
 
+    for key in ("fangstfelt", "hovedomrade", "kyst_hav"):
+        if key in out.columns:
+            out[key] = out[key].astype("string").str.strip()
+            out.loc[out[key] == "", key] = pd.NA
+
+    for key in ("hovedomrade_lon", "hovedomrade_lat"):
+        if key in out.columns:
+            out[key] = pd.to_numeric(out[key], errors="coerce")
+
     print(f"  Rows after filtering: {len(out)}")
     if out.empty:
         print(
@@ -226,6 +258,13 @@ def _count_unique_vessels(values: pd.Series) -> int:
     values = values.dropna().astype(str).str.strip()
     values = values[values != ""]
     return int(values.nunique())
+
+
+def _representative_numeric(values: pd.Series) -> float | pd._libs.missing.NAType:
+    numeric = pd.to_numeric(values, errors="coerce").dropna()
+    if numeric.empty:
+        return pd.NA
+    return float(numeric.mean())
 
 
 def main() -> None:
@@ -260,18 +299,32 @@ def main() -> None:
             combined[column] = pd.NA
 
     group_cols = ["year", "week", "port", "species"]
+    agg_dict = {
+        "tons": ("tons", "sum"),
+        "n_vessels": ("vessel_id", _count_unique_vessels),
+        "dominant_gear": ("gear", _dominant_value),
+    }
+    for key in ("fangstfelt", "hovedomrade", "hovedomrade_lon", "hovedomrade_lat", "kyst_hav"):
+        if key in combined.columns:
+            if key in ("hovedomrade_lon", "hovedomrade_lat"):
+                agg_dict[f"{key}"] = (key, _representative_numeric)
+            else:
+                agg_dict[f"{key}"] = (key, _dominant_value)
+
     weekly = (
         combined.groupby(group_cols, dropna=False)
-        .agg(
-            tons=("tons", "sum"),
-            n_vessels=("vessel_id", _count_unique_vessels),
-            dominant_gear=("gear", _dominant_value),
-        )
+        .agg(**agg_dict)
         .reset_index()
     )
 
     weekly["n_vessels"] = weekly["n_vessels"].fillna(0).astype(int)
     weekly["dominant_gear"] = weekly["dominant_gear"].astype("string")
+    for key in ("fangstfelt", "hovedomrade", "kyst_hav"):
+        if key in weekly.columns:
+            weekly[key] = weekly[key].astype("string")
+    for key in ("hovedomrade_lon", "hovedomrade_lat"):
+        if key in weekly.columns:
+            weekly[key] = pd.to_numeric(weekly[key], errors="coerce")
 
     Path("data").mkdir(parents=True, exist_ok=True)
     weekly.to_csv(OUT_PATH, index=False, encoding="utf-8")

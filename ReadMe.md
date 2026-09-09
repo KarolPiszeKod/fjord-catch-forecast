@@ -181,6 +181,12 @@ under `data/ocean_features.csv` (see `src/ingest_copernicus.py` for details).
 
 Important model files in `models/` include `xgb_quantile_model.json`, `feature_columns.json`, `metrics.json`, and `conformal_Q.json`. The `.gitignore` excludes raw data, generated CSV files, model JSON/CSV artifacts, experiment archives, and secrets. Generate them locally rather than expecting them to appear after cloning.
 
+### Future-ready metadata in the raw landing files
+
+The Fisheries Directorate exports also include optional spatial metadata such as `fangstfelt`, `hovedomrade`, `hovedomrade_lon`, `hovedomrade_lat`, and `kyst_hav`. These fields are now read through the ingestion layer and retained in `data/catch_data_real.csv` as extra columns when present, even though the v1 model still uses the port-level aggregation and does not depend on them yet.
+
+This is useful for future work: if you later want to replace or augment the port-based location with fishing-ground or coastal-area coordinates, the raw metadata is already available without changing the rest of the pipeline structure. In other words, the model is intentionally conservative today, but the dataset is prepared for a cleaner next step later.
+
 ## What's next? (if someone feels like hacking on this)
 
 - Add a pre-forecast anomaly or regime-gating classifier.
