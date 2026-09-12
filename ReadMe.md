@@ -1,209 +1,161 @@
 # Fjord Catch Forecast (FCF)
 
-FCF is a small forecasting project for weekly landed catch in Norwegian ports. It gives a median forecast plus a sensible uncertainty range for each port, species, and ISO week. It is mainly a place to explore historical forecasts and uncertainty, not a crystal ball for operational decisions. No, it will not tell you exactly how many tonnes will land next Tuesday, but it should give you a useful range and a reasonable guess.
+FCF forecasts weekly landed catch for Norwegian ports by port, species, and ISO week. It reports a median estimate together with a calibrated uncertainty interval for the same weekly forecast.
 
-## What's inside?
+## At a glance
 
-- Landing records from the Norwegian Fisheries Directorate.
-- Ocean features from Copernicus Marine, including temperature, chlorophyll, and wave height.
-- An XGBoost quantile model with q10, q50, and q90 predictions.
-- Conformalized Quantile Regression (CQR) for calibrated 80% intervals.
-- A Streamlit dashboard for exploring forecasts, errors, and uncertainty.
-- Reports, experiment archives, and an optional Docker setup for running the dashboard locally.
+- Norwegian Fisheries Directorate landings combined with Copernicus Marine features
+- XGBoost q10, q50, and q90 quantile forecasts
+- CQR-calibrated nominal 80% uncertainty intervals
+- Streamlit dashboard with optional local Docker setup
 
-## Quickstart: run locally in 5 minutes
+## Dashboard preview
 
-Run these commands from the repository root.
+Gray dots are actual landings, the blue line is the median forecast, and the shaded band is the calibrated nominal 80% uncertainty interval.
 
-1. Clone the repository and open its directory.
-2. Create and activate a virtual environment if you want an isolated setup:
+<p align="center">
+  <img src="assets/dashboard-overview.jpg"
+       alt="Fjord Catch Forecast dashboard showing forecast controls, actual landings, median forecast, and calibrated 80 percent uncertainty interval"
+       width="100%">
+</p>
 
-    ```powershell
-    python -m venv .venv
-    .venv\Scripts\activate
-    ```
+## Results
 
-3. Install the dependencies:
+Evaluation uses the 2024–2025 held-out test period.
 
-    ```powershell
-    pip install -r requirements.txt
-    ```
+| Metric | Held-out test result | Meaning |
+|---|---:|---|
+| MAE | 249.57 t | Average absolute error in weekly landed catch |
+| MdAPE | 50.66% | Typical relative error, more stable than MAPE near low catch volumes |
+| Calibrated nominal-80% coverage | 80.55% | Share of actual observations inside the reported calibrated interval |
 
-4. Run the pipeline:
+The purpose is to provide a useful central estimate together with uncertainty, rather than a falsely precise single-number forecast.
 
-   You can run the pipeline step by step (commands below), or use the helper script `run_pipeline.py`, which executes all steps in order. Both approaches are equivalent — `run_pipeline.py` simply runs the same commands sequentially.
+<p align="center">
+  <img src="assets/model-performance.jpg"
+       alt="Fjord Catch Forecast model performance showing MAE, MdAPE, calibrated coverage, interval width, and detailed metrics"
+       width="100%">
+</p>
 
-    ```powershell
-    # Option A: step by step
-    python src/ingest_fiskeridir.py
-    python src/ingest_copernicus.py
-    python src/merge_sources.py
-    python src/features.py
-    python src/feature_selection.py
-    python src/train.py
+> Dashboard filters change the displayed forecast series. Saved headline metrics describe the global held-out test evaluation.
 
-    # Option B: one command (recommended)
-    python run_pipeline.py
-    ```
+## Approach
 
-5. Start the dashboard:
+1. Annual landing records and marine data are ingested and merged.
+2. Data is aggregated to weekly port × species × ISO-week observations.
+3. Lag, seasonal, fleet-effort, and ocean-condition features are engineered.
+4. XGBoost quantile models estimate q10, q50, and q90 on log1p(tons).
+5. CQR uses 2023 as a separate calibration period.
+6. Final evaluation uses the untouched 2024–2025 test period.
 
-    ```powershell
-    streamlit run app.py
-    ```
+## Model diagnostics
 
-The dashboard will be available at `http://localhost:8501`.
+Feature importance is based on XGBoost gain and helps inspect model behaviour, but it does not establish causal effects.
 
-Raw data and generated models are local artifacts. They are ignored by Git, so every user needs to obtain or generate them locally. The Copernicus step may also require account configuration.
+<p align="center">
+  <img src="assets/feature-importance.jpg"
+       alt="XGBoost feature importance and forecast data notes in Fjord Catch Forecast"
+       width="100%">
+</p>
 
-## Run with Docker (optional, but nice)
+## Run locally
 
-1. Install and start Docker Desktop.
-2. From the repository root, run:
-
-    ```powershell
-    docker compose up --build
-    ```
-3. Open `http://localhost:8501`.
-4. Stop the dashboard with:
-
-    ```powershell
-    docker compose down
-    ```
-
-Docker is an optional local deployment for the dashboard. Data and model files are not baked into the image; the Compose file mounts the local `data/` and `models/` folders at runtime. If you like containers, this is the project's happy place.
-
-For a direct Docker command on Windows PowerShell:
-
-```powershell
-docker build -t fjord-catch-forecast .
-docker run --rm -p 8501:8501 -v "${PWD}/data:/app/data" -v "${PWD}/models:/app/models" fjord-catch-forecast
+```bash
+python -m venv .venv
 ```
 
-For startup diagnostics:
+For activation on Windows PowerShell:
 
 ```powershell
-docker compose logs -f fcf
+.venv\Scripts\activate
 ```
 
-You still need to generate the data and model artifacts locally with the Python pipeline first. `.dockerignore` keeps raw data, generated datasets, model files, and secrets out of the image.
+For activation on macOS or Linux:
 
-## What does the model actually do?
+```bash
+source .venv/bin/activate
+```
 
-The model learns from historical data from 2014-2022. It uses 2023 as a calibration year and tests its forecasts on 2024-2025. For each port, species, and week, it predicts a median catch volume and an 80% uncertainty interval rather than one overly confident number.
+Then:
 
-The features include lagged catch volumes, seasonal averages, lagged fleet-effort signals such as `n_vessels_lag_1`, and ocean conditions. The target is transformed with `log1p(tons)` before training. CQR then widens the q10-q90 interval when needed so the reported coverage is better calibrated.
+```bash
+pip install -r requirements.txt
+python run_pipeline.py
+streamlit run app.py
+```
 
-## How good is it?
+The dashboard opens at `http://localhost:8501`.
 
-The full-data v1 baseline currently reports:
+<details>
+  <summary>Optional step-by-step pipeline commands</summary>
 
-| Metric | Result |
-|---|---:|
-| MAE | 249.57 t |
-| MdAPE | 50.66% |
-| Calibrated 80% coverage | 80.55% |
+```bash
+python src/ingest_fiskeridir.py
+python src/ingest_copernicus.py
+python src/merge_sources.py
+python src/features.py
+python src/feature_selection.py
+python src/train.py
+```
 
-MAE is the average absolute error in tonnes. MdAPE describes the typical relative error, while coverage tells us how often actual landings fall inside the calibrated interval. It is not perfect, but it is a solid baseline for a first version.
+</details>
 
-The normal-segment experiment is reported separately because it is diagnostic, not deployable:
+## Docker
 
-| Variant | MAE | MdAPE | Calibrated 80% coverage |
-|---|---:|---:|---:|
-| Normal-segment oracle experiment | 193.72 t | 34.83% | 77.05% |
+```bash
+docker compose up --build
+```
 
-## Known limitations (read this before you trust it too much)
+The dashboard opens at `http://localhost:8501`.
 
-- The `normal`, `weak`, and `high` catch segments were assigned after the actual outcome was known. The normal-only result is therefore an oracle experiment. A real deployment would need a pre-forecast gating classifier.
-- The current ocean inputs are historical Copernicus reanalysis, not guaranteed future conditions. The dashboard's forward scenario carries selected recent conditions forward.
+```bash
+docker compose down
+```
+
+Docker runs the dashboard locally and mounts local `data/` and `models/` directories. Data and model artifacts must be generated or placed locally before use; they are not baked into the image.
+
+## Data and artifacts
+
+- Fisheries Directorate CSV files belong in `data/raw/fiskeridir/`.
+- Prepared Copernicus features belong in `data/ocean_features.csv`.
+- Merged training data is stored locally under `data/`.
+- Generated model artifacts are stored locally under `models/`.
+- Copernicus Marine access may require account configuration.
+- Raw data and generated artifacts are local by default.
+
+## Limitations and responsible use
+
+- Ocean inputs currently use historical Copernicus reanalysis rather than guaranteed future operational conditions.
+- Forward scenario views carry selected recent conditions forward and are not live weather forecasts.
 - `quota_pct_used` is a catch-based proxy, not official port-level quota data.
-- The model cannot predict sudden events that do not appear in the historical data, such as an unexpected regulation change or a fleet disruption.
-- MAPE can look very high when actual catch is close to zero. Use MAE and MdAPE alongside it.
-
-For the full evaluation and discussion, see [`reports/final_evaluation.md`](reports/final_evaluation.md).
+- The model cannot anticipate shocks not represented in historical data, such as regulation changes or fleet disruptions.
+- MAPE can be unstable when actual catch is near zero; interpret MAE and MdAPE alongside it.
+- The catch-segment experiment is an oracle diagnostic because labels use realized outcomes; a deployable version would need a pre-forecast classifier.
 
 ## Project structure
 
 ```text
 FCF/
-├── app.py                 # Streamlit dashboard
-├── config.py              # Shared ports, species, years, and model constants
-├── requirements.txt       # Python dependencies
-├── Dockerfile             # Optional local dashboard image
-├── docker-compose.yml     # Optional Docker Compose setup
-├── run_pipeline.py        # Pipeline runner
-├── scripts/               # Small project utilities
-├── reports/               # Evaluation reports
-├── data/                  # Local and generated data
-├── models/                # Local model artifacts
-└── src/                   # Ingestion, features, selection, and training
+├── app.py
+├── config.py
+├── requirements.txt
+├── Dockerfile
+├── docker-compose.yml
+├── run_pipeline.py
+├── scripts/
+├── reports/
+├── data/
+├── models/
+└── src/
 ```
 
-The main path is `src/` -> `models/` -> `app.py`. The `data/` and `models/` folders are deliberately local and are not part of the public Git workflow by default.
+## Roadmap
 
-## Data & model artifacts
+- Add a pre-forecast anomaly or regime-gating classifier
+- Test mixture-of-experts models for catch regimes
+- Add reliable fishing-ground or catch-location features
+- Replace historical reanalysis inputs with operational forecast products
 
-Expected local data locations include:
+## Data credits and license
 
-- `data/raw/fiskeridir/`: manually obtained Fisheries Directorate files.
-- `data/ocean_features.csv`: prepared Copernicus features.
-- `data/raw_catch_data.csv`: merged data used by feature engineering and training.
-
-### Where to get the data
-
-#### Download links (2013–2025)
-
-- [fangstdata_2013.csv.zip](https://register.fiskeridir.no/uttrekk/fangstdata_2013.csv.zip)
-- [fangstdata_2014.csv.zip](https://register.fiskeridir.no/uttrekk/fangstdata_2014.csv.zip)
-- [fangstdata_2015.csv.zip](https://register.fiskeridir.no/uttrekk/fangstdata_2015.csv.zip)
-- [fangstdata_2016.csv.zip](https://register.fiskeridir.no/uttrekk/fangstdata_2016.csv.zip)
-- [fangstdata_2017.csv.zip](https://register.fiskeridir.no/uttrekk/fangstdata_2017.csv.zip)
-- [fangstdata_2018.csv.zip](https://register.fiskeridir.no/uttrekk/fangstdata_2018.csv.zip)
-- [fangstdata_2019.csv.zip](https://register.fiskeridir.no/uttrekk/fangstdata_2019.csv.zip)
-- [fangstdata_2020.csv.zip](https://register.fiskeridir.no/uttrekk/fangstdata_2020.csv.zip)
-- [fangstdata_2021.csv.zip](https://register.fiskeridir.no/uttrekk/fangstdata_2021.csv.zip)
-- [fangstdata_2022.csv.zip](https://register.fiskeridir.no/uttrekk/fangstdata_2022.csv.zip)
-- [fangstdata_2023.csv.zip](https://register.fiskeridir.no/uttrekk/fangstdata_2023.csv.zip)
-- [fangstdata_2024.csv.zip](https://register.fiskeridir.no/uttrekk/fangstdata_2024.csv.zip)
-- [fangstdata_2025.csv.zip](https://register.fiskeridir.no/uttrekk/fangstdata_2025.csv.zip)
-
-Download all available years, unzip the files, and place the CSV files under `data/raw/fiskeridir/`.
-
-### Copernicus Marine account (2 minutes)
-
-To download ocean features (SST, chlorophyll, wave height, etc.), you need a
-free Copernicus Marine account. Registration takes about 2 minutes:
-
-**Register here:** https://data.marine.copernicus.eu/
-
-After registration, you can download the required products and place them
-under `data/ocean_features.csv` (see `src/ingest_copernicus.py` for details).
-
-Important model files in `models/` include `xgb_quantile_model.json`, `feature_columns.json`, `metrics.json`, and `conformal_Q.json`. The `.gitignore` excludes raw data, generated CSV files, model JSON/CSV artifacts, experiment archives, and secrets. Generate them locally rather than expecting them to appear after cloning.
-
-### Optional metadata variant for future fishing-ground work
-
-The default production pipeline remains the original, stable version. If you explicitly want to keep the optional spatial metadata from the Fisheries Directorate export, use the experimental script `src/ingest_fiskeridir_with_metadata.py` instead of the default `src/ingest_fiskeridir.py`.
-
-That experimental variant reads and retains fields such as `fangstfelt`, `hovedomrade`, `hovedomrade_lon`, `hovedomrade_lat`, and `kyst_hav` when they are present in the raw files. These fields are kept as additional columns in `data/catch_data_real.csv` for future work on catch-location or coastal-area features, but the current v1 model still uses the standard port-level aggregation and does not require them.
-
-Use the default script unless you are intentionally testing this metadata path; the main repo flow is intentionally conservative and should stay stable for the working forecasting model.
-
-## What's next? (if someone feels like hacking on this)
-
-- Add a pre-forecast anomaly or regime-gating classifier.
-- Try a mixture-of-experts approach for weak, normal, and high-catch regimes.
-- Add better fishing-ground or catch-location features when reliable source data is available.
-- Replace historical reanalysis with operational forecast products.
-
-There is plenty of room for improvement, but at least the first version knows when it does not know. That is already a fine start.
-
-## License & credits
-
-FCF uses data from the Norwegian Fisheries Directorate and Copernicus Marine. Users must obtain the data themselves and check the applicable licenses, attribution requirements, and terms of use before using or redistributing it. This repository does not include raw licensed data or generated model artifacts by default.
-
-## Included trained model
-
-This repository includes a trained v1 model and its supporting artifacts, built from the prepared data used for this project. You can use it directly with the dashboard after placing the matching local data under `data/`.
-
-If you are new to the project and want to use data from another year or dataset, start by comparing its structure with the files used here. Check the column names, data types, date and week conventions, port and species values, and the overall file layout. If the new dataset is organised differently, that is completely normal: the ingestion or feature-engineering helpers may need a small refactor before the existing model and pipeline can use it reliably. In other words, the model is ready to help, but it is not quite a plug-and-play wizard for every possible CSV format yet.
+FCF uses Norwegian Fisheries Directorate and Copernicus Marine data. Users must obtain the data themselves and follow the applicable licenses, attribution requirements, and terms of use. For the detailed evaluation note, see [reports/final_evaluation.md](reports/final_evaluation.md).
