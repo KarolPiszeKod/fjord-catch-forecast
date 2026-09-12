@@ -14,7 +14,7 @@ FCF forecasts weekly landed catch for Norwegian ports by port, species, and ISO 
 Gray dots are actual landings, the blue line is the median forecast, and the shaded band is the calibrated nominal 80% uncertainty interval.
 
 <p align="center">
-  <img src="assets/dashboard-overview.jpg"
+  <img src="assets/dashboard-overview.png"
        alt="Fjord Catch Forecast dashboard showing forecast controls, actual landings, median forecast, and calibrated 80 percent uncertainty interval"
        width="100%">
 </p>
@@ -32,7 +32,7 @@ Evaluation uses the 2024–2025 held-out test period.
 The purpose is to provide a useful central estimate together with uncertainty, rather than a falsely precise single-number forecast.
 
 <p align="center">
-  <img src="assets/model-performance.jpg"
+  <img src="assets/model-performance.png"
        alt="Fjord Catch Forecast model performance showing MAE, MdAPE, calibrated coverage, interval width, and detailed metrics"
        width="100%">
 </p>
